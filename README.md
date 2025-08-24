@@ -1,5 +1,5 @@
 # set up tutorial
-# Step 1: set up project
+# set up project
 ### create a new project folder
 ```bash
 mkdir word-learning-app
@@ -23,7 +23,7 @@ npm install express pg cors dotenv
 └── package.json
 ```
 
-# Step 2: set up PostgreSQL
+# set up PostgreSQL
 ```bash
 psql -U your_user -d postgres
 ```
@@ -60,3 +60,22 @@ INSERT INTO words (word, translation) VALUES
 ('Weltschmerz', '世界痛苦（指对世界现状的悲观忧郁）'),
 ('Fremdschämen', '替别人感到羞耻');
 ```
+```sql
+INSERT INTO users (username) VALUES ('testuser');
+```
+
+# test
+```
+node index.js
+
+curl http://localhost:3000/words/today
+
+curl -X POST http://localhost:3000/words/20/learn \
+  -H "Content-Type: application/json" \
+  -d '{"userId": 1, "sentences": ["Ich habe eine Sinnkrise nach der Uni.", "Viele Menschen erleben eine Sinnkrise im mittleren Alter."]}'
+
+curl "http://localhost:3000/words/review?userId=1"
+```
+
+
+
