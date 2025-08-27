@@ -34,24 +34,33 @@ function Today() {
   };
 
   return (
-    <div>
-      <h2>Today's Words</h2>
-      {words.map(word => (
-        <div key={word.id} style={{ marginBottom: "20px" }}>
-          <h3>{word.word} - {word.translation}</h3>
-          <input
-            placeholder="Sentence 1"
-            onChange={e => handleChange(word.id, 0, e.target.value)}
-          />
-          <input
-            placeholder="Sentence 2"
-            onChange={e => handleChange(word.id, 1, e.target.value)}
-          />
-          <button onClick={() => handleSubmit(word.id)}>Mark Learned</button>
-        </div>
-      ))}
-    </div>
-  );
+  <div>
+    <h2 className="text-2xl font-semibold mb-4">Today's Words</h2>
+    {words.map(word => (
+      <div key={word.id} className="bg-white rounded-xl shadow p-4 mb-4">
+        <h3 className="text-xl font-bold">{word.word}</h3>
+        <p className="text-gray-600 mb-2">{word.translation}</p>
+        <input
+          className="w-full border rounded p-2 mb-2"
+          placeholder="Sentence 1"
+          onChange={e => handleChange(word.id, 0, e.target.value)}
+        />
+        <input
+          className="w-full border rounded p-2 mb-2"
+          placeholder="Sentence 2"
+          onChange={e => handleChange(word.id, 1, e.target.value)}
+        />
+        <button
+          onClick={() => handleSubmit(word.id)}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          Mark Learned
+        </button>
+      </div>
+    ))}
+  </div>
+);
+
 }
 
 export default Today;
