@@ -6,20 +6,20 @@ function App() {
   const [page, setPage] = useState("today");
 
   return (
-    <div className="min-h-screen bg-[#fdf6e3] text-gray-800 font-sans">
+    <div className="min-h-screen bg-[#f3f3cd] text-gray-800 font-mono">
       {/* Header */}
-      <header className="bg-[#f5ecd9] shadow-md">
+      <header className="bg-[#F8DF9A] shadow-md">
         <div className="max-w-4xl mx-auto flex justify-between items-center py-4 px-6">
-          <h1 className="text-2xl font-bold text-[#7c6a4f] tracking-wide">
-            Word Learning App
+          <h1 className="text-4xl italic  font-curly font-bold text-[#9D6FEE] tracking-wide">
+            Mein Vokabelheft
           </h1>
           <nav className="space-x-4">
             <button
               onClick={() => setPage("today")}
               className={`px-4 py-2 rounded-xl transition ${
                 page === "today"
-                  ? "bg-[#e3d3b5] text-[#4b3f2f] font-semibold shadow-sm"
-                  : "hover:bg-[#eee4cf]"
+                  ? "bg-[#B9BBE5] text-[#4b3f2f] font-semibold shadow-sm"
+                  : "hover:bg-[#D9DAFF]"
               }`}
             >
               Today's Words
@@ -28,8 +28,8 @@ function App() {
               onClick={() => setPage("review")}
               className={`px-4 py-2 rounded-xl transition ${
                 page === "review"
-                  ? "bg-[#e3d3b5] text-[#4b3f2f] font-semibold shadow-sm"
-                  : "hover:bg-[#eee4cf]"
+                  ? "bg-[#B9BBE5] text-[#4b3f2f] font-semibold shadow-sm"
+                  : "hover:bg-[#D9DAFF]"
               }`}
             >
               Review
