@@ -1,6 +1,7 @@
 const express = require("express");
 const pool = require("../db");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 // GET /words/today → 3 new unlearned words
 router.get("/today", async (req, res) => {
@@ -16,33 +17,55 @@ router.get("/today", async (req, res) => {
 });
 
 // POST /words/:id/learn
-router.post("/:id/learn", async (req, res) => {
-  const { id } = req.params;
-  const { userId, sentences } = req.body;
+// router.post("/:id/learn", async (req, res) => {
+//   const { id } = req.params;
+//   const { userId, sentences } = req.body;
 
-  if (!userId || !Array.isArray(sentences) || sentences.length < 2) {
-    return res.status(400).json({ error: "Need userId and two example sentences" });
-  }
+//   if (!userId || !Array.isArray(sentences) || sentences.length < 2) {
+//     return res.status(400).json({ error: "Need userId and two example sentences" });
+//   }
+
+//   try {
+//     // 1. Save sentences into examples table
+//     for (const sentence of sentences) {
+//       await pool.query(
+//         "INSERT INTO examples (word_id, user_id, sentence) VALUES ($1, $2, $3)",
+//         [id, userId, sentence]
+//       );
+//     }
+
+//     // 2. Mark word as learned
+//     await pool.query(
+//       "UPDATE words SET is_learned = TRUE, learned_at = NOW() WHERE id = $1",
+//       [id]
+//     );
+
+//     res.json({ message: "Word marked as learned", wordId: id });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Database error" });
+//   }
+// });
+// Example: protect the "learn" route
+router.post("/:id/learn", auth, async (req, res) => {
+  const { sentences } = req.body;
+  const userId = req.user.userId; // taken from JWT, not hardcoded
+  const wordId = req.params.id;
 
   try {
-    // 1. Save sentences into examples table
-    for (const sentence of sentences) {
-      await pool.query(
-        "INSERT INTO examples (word_id, user_id, sentence) VALUES ($1, $2, $3)",
-        [id, userId, sentence]
-      );
-    }
-
-    // 2. Mark word as learned
     await pool.query(
-      "UPDATE words SET is_learned = TRUE, learned_at = NOW() WHERE id = $1",
-      [id]
+      "INSERT INTO examples (user_id, word_id, sentence) VALUES ($1, $2, $3), ($1, $2, $4)",
+      [userId, wordId, sentences[0], sentences[1]]
     );
 
-    res.json({ message: "Word marked as learned", wordId: id });
+    await pool.query(
+      "UPDATE words SET is_learned = true, learned_at = NOW() WHERE id = $1",
+      [wordId]
+    );
+
+    res.json({ success: true });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: err.message });
   }
 });
 

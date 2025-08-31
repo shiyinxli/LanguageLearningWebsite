@@ -1,14 +1,20 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const wordsRouter = require("./routes/words");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-app.use("/words", wordsRouter);
+// Routes
+const authRoutes = require("./routes/auth");
+const wordRoutes = require("./routes/words");
 
-const PORT = 3000;
+app.use("/auth", authRoutes);
+app.use("/words", wordRoutes);
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost: ${PORT}`);
 });
