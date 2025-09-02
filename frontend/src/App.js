@@ -1,55 +1,47 @@
 import React, { useState } from "react";
 import Today from "./pages/Today";
 import Review from "./pages/Review";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 function App() {
-  const [page, setPage] = useState("today");
+  const [page, setPage] = useState("signup"); // start at signup
+  const token = localStorage.getItem("token");
+  
+
+  if (!token) {
+    if (page === "signup") {
+      return <Signup switchToLogin={() => setPage("login")} />;
+    }
+    return <Login 
+    switchToSignup={() => setPage("signup")}
+    onLogin={() => setPage("today")} />;
+  }
 
   return (
-    <div className="min-h-screen bg-[#f3f3cd] text-gray-800 font-mono">
-      {/* Header */}
-      <header className="bg-[#F8DF9A] shadow-md">
-        <div className="max-w-4xl mx-auto flex justify-between items-center py-4 px-6">
-          <h1 className="text-4xl italic  font-curly font-bold text-[#9D6FEE] tracking-wide">
-            Mein Vokabelheft
-          </h1>
-          <nav className="space-x-4">
-            <button
-              onClick={() => setPage("today")}
-              className={`px-4 py-2 rounded-xl transition ${
-                page === "today"
-                  ? "bg-[#B9BBE5] text-[#4b3f2f] font-semibold shadow-sm"
-                  : "hover:bg-[#D9DAFF]"
-              }`}
-            >
-              Today's Words
-            </button>
-            <button
-              onClick={() => setPage("review")}
-              className={`px-4 py-2 rounded-xl transition ${
-                page === "review"
-                  ? "bg-[#B9BBE5] text-[#4b3f2f] font-semibold shadow-sm"
-                  : "hover:bg-[#D9DAFF]"
-              }`}
-            >
-              Review
-            </button>
-          </nav>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#F5F5DC]">
+      <nav className="flex gap-4 p-4 bg-[#E6D8AD] shadow">
+        <button onClick={() => setPage("today")} className="font-bold">
+          Today's Words
+        </button>
+        <button onClick={() => setPage("review")} className="font-bold">
+          Review
+        </button>
+        <button
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }}
+          className="ml-auto text-red-600"
+        >
+          Logout
+        </button>
+      </nav>
 
-      {/* Main content */}
-      <main className="max-w-4xl mx-auto py-10 px-6">
-        <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-[#e5dcc3]">
-          {page === "today" && <Today />}
-          {page === "review" && <Review />}
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="text-center text-sm text-[#7c6a4f] py-6">
-        Built with ❤️ using React + Tailwind
-      </footer>
+      <div className="p-6">
+        {page === "today" && <Today />}
+        {page === "review" && <Review />}
+      </div>
     </div>
   );
 }

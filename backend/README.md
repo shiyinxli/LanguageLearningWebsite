@@ -89,6 +89,13 @@ ALTER COLUMN created_at SET DEFAULT NOW();
 ALTER TABLE users 
 ALTER COLUMN username TYPE VARCHAR(50);
 ```
+```sql
+ALTER TABLE users
+ADD COLUMN password TEXT DEFAULT 'changeme';
+-- After updating all existing rows:
+ALTER TABLE users ALTER COLUMN password SET NOT NULL;
+
+```
 
 # test
 ```

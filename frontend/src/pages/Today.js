@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+
+
+
 function Today() {
   const [words, setWords] = useState([]);
   const [sentences, setSentences] = useState({});
+  // const token = localStorage.getItem("token");
 
   useEffect(() => {
-    axios.get("http://localhost:3000/words/today")
-      .then(res => setWords(res.data));
+    const token = localStorage.getItem("token");
+    axios.get("http://localhost:3000/words/today", {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+    )
+      .then(res => setWords(res.data))
+      .catch(error =>{ console.error("Error fetching today's words:", error);
+    if(error.response?.status === 401) {
+      alert("Please log in to access today's words.");
+    } });
   }, []);
 
   const handleChange = (wordId, index, value) => {
@@ -26,10 +38,10 @@ function Today() {
       alert("Please enter 2 sentences");
       return;
     }
-    await axios.post(`http://localhost:3000/words/${wordId}/learn`, {
-      userId: 1,
-      sentences: wordSentences
-    });
+    const token = localStorage.getItem("token");
+    await axios.post(`http://localhost:3000/words/${wordId}/learn`, 
+      {sentences: wordSentences},
+      { headers: { Authorization: `Bearer ${token}` ,}, });
     alert("Word learned!");
   };
 
