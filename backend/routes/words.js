@@ -38,4 +38,28 @@ router.post("/:id/learn", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/review", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.id; // from JWT
+
+    const result = await pool.query(
+      `SELECT w.id, w.word, w.translation,
+              array_agg(e.sentence) AS examples
+       FROM words w
+       JOIN examples e ON w.id = e.word_id
+       WHERE e.user_id = $1
+       GROUP BY w.id, w.word, w.translation
+       ORDER BY random()
+       LIMIT 3`,
+      [userId]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 module.exports = router;

@@ -96,6 +96,9 @@ ADD COLUMN password TEXT DEFAULT 'changeme';
 ALTER TABLE users ALTER COLUMN password SET NOT NULL;
 
 ```
+```sql
+\copy words(word, translation) FROM '/Users/shiyinli/java1/word-learning-app/backend/words.csv' DELIMITER ',' CSV HEADER;
+```
 
 # test
 ```
