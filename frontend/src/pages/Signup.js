@@ -5,11 +5,12 @@ function Signup({ onSignup, switchToLogin }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const API_BASE = "https://languagelearningwebsite-backend.onrender.com";
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/auth/signup", {
+      await axios.post(`${API_BASE}/auth/signup`, {
         username,
         email,
         password,

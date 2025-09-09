@@ -4,10 +4,11 @@ import axios from "axios";
 function Review() {
   const [reviewWords, setReviewWords] = useState([]);
   const token = localStorage.getItem("token");
+  const API_BASE = "https://languagelearningwebsite-backend.onrender.com";
 
   const fetchReview = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/words/review", {
+      const res = await axios.get(`${API_BASE}/words/review`, {
         headers: {
           Authorization: `Bearer ${token}`, // send JWT
         },

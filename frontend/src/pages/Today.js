@@ -8,10 +8,11 @@ function Today() {
   const [words, setWords] = useState([]);
   const [sentences, setSentences] = useState({});
   // const token = localStorage.getItem("token");
+  const API_BASE = "https://languagelearningwebsite-backend.onrender.com";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get("http://localhost:3000/words/today", {
+    axios.get(`${API_BASE}/words/today`, {
       headers: { Authorization: `Bearer ${token}` },
     }
     )
@@ -39,7 +40,7 @@ function Today() {
       return;
     }
     const token = localStorage.getItem("token");
-    await axios.post(`http://localhost:3000/words/${wordId}/learn`, 
+    await axios.post(`${API_BASE}/words/${wordId}/learn`, 
       {sentences: wordSentences},
       { headers: { Authorization: `Bearer ${token}` ,}, });
     alert("Word learned!");
