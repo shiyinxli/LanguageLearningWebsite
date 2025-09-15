@@ -63,7 +63,7 @@ CREATE TABLE examples (
 
 
 ```sql
-\copy words(word, translation) FROM '/Users/shiyinli/java1/word-learning-app/backend/words.csv' DELIMITER ',' CSV HEADER;
+\copy words(word, translation) FROM '/Users/shiyinli/java1/word-learning-app/backend/words2.csv' DELIMITER ',' CSV HEADER;
 ```
 
 # test
