@@ -7,7 +7,7 @@ const verifyToken = require("../middleware/auth");
 // Get today's words (protected)
 router.get("/today", verifyToken, async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM words WHERE is_learned = false LIMIT 3");
+    const result = await pool.query("SELECT * FROM words WHERE is_learned = false ORDER BY random() LIMIT 3");
     res.json(result.rows);
   } catch (err) {
     console.error(err);
